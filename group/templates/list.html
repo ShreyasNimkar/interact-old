@@ -1,0 +1,178 @@
+{% extends 'basemain.html' %}
+
+{% block title %}Explore Groups{%endblock%}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{%static 'feed.css'%}">
+<style>
+    body{
+        background-image: none;
+    }
+    nav{
+        background-color: rgb(36, 36, 36);
+        font-family: "Quicksand";
+    }
+    .logo {
+        max-height: 5vh;
+        max-width: 8vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .logo a {
+        max-width: 8vh;
+        height: 6vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .logo a img {
+        max-width: 7vw;
+    }
+    .head{
+        display: flex;
+        color: white;
+        width: 100vw;
+        height: 24vh;
+    }
+    .explore{
+        display: flex;
+        width: 70vw;
+        height: 24vh;
+        justify-content: flex-start;
+        padding-left: 10vh;
+        align-items: center;
+        font-family: 'Quicksand';
+        font-size: 120px;
+        text-decoration: underline;
+        text-decoration-thickness: 5px;
+    }
+    .create{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30vw;
+        height: 24vh;
+        font-family: 'Quicksand';
+    }
+    .create a{
+        font-size: 30px;
+        transition: all 0.5s ease-out;
+    }
+    .listhead{
+        overflow-x: hidden;
+        width: 100vw;
+        height: 10vh;
+        display: grid;
+        grid-template-columns: 30vw 25vw 25vw 20vw;
+        color: white;
+    }
+    .list{
+        overflow-x: hidden;
+        width: 100vw;
+        height: 60vh;
+        display: grid;
+        grid-template-columns: 30vw 25vw 25vw 20vw;
+        overflow-y: scroll;
+        color: white;
+    }
+    .items{
+        padding: 2vh;
+        height: 6vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-family: 'Quicksand';
+    }
+    .heading{
+        font-weight: 700;
+        padding-bottom: 0;
+    }
+    .line{
+        grid-column-start: 1;
+        grid-column-end: 5;
+        background-color: white;
+        width: 90vw;
+        height: 2px;
+        margin-left: 5vw;
+    }
+    .create a:hover{
+        text-decoration: underline;
+        font-size: 32px;
+    }
+    .items a:hover{
+        text-decoration: underline;
+    }
+</style>
+
+{%endblock%}
+
+{% block main %}
+
+<nav>
+    <div class="logo">
+        <a href="/user/feed/"><img src="{% static 'white with underline.png' %}" alt=""></a>
+    </div>
+    <div class="nav_items">
+        <a href="/user/view/{{request.user}}/">
+            <div>Profile</div>
+        </a>
+        <a href="/grp/view/">
+            <div>Explore</div>
+        </a>
+        <a href="/grp/joinchat">
+            <div> Groups</div>
+        </a>
+    </div>
+    <a href="/logout">
+        <div class="logout">logout</div>
+    </a>
+</nav>
+
+    <div class="head">
+        <div class="explore"><div>Explore</div></div>
+        <div class="create"> <a href="/grp/create/">Create a New Group</a></div>
+    </div>
+    <div class="listhead">
+        <div class="items heading">
+            <div>Name</div>
+        </div>
+        <div class="items heading">
+            <div>No. of Members</div>
+        </div>
+        <div class="items heading">
+            <div>Date Created</div>
+        </div>
+        <div class="items heading">
+            <div></div>
+        </div>
+        <div class="item line"></div>
+    </div>
+    <div class="list">
+        {%for group in groups%}
+
+        <div class="items">
+            <div>{{group.name}}</div>
+        </div>
+        <div class="items">
+            <div>{{group.no_of_members}}</div>
+        </div>
+        <div class="items">
+            <div>{{group.date_created}}</div>
+        </div>
+        <div class="items">
+            <div> <a href="/grp/view/{{group.slug}}">View</a></div>
+        </div>
+
+        {%endfor%}
+    </div>
+{%endblock%}
+
+
+
+

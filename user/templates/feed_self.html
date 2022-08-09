@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed</title>
+    <style>
+        *{
+            margin: 0;
+        }
+        nav{
+            background-color: black;
+            color: white;
+            width: 100vw;
+            height: 5vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .title{
+            font-size: 20px;
+            color: white;
+        }
+        main{
+            display: flex;
+            width: 100vw;
+            height: 95vh;
+            justify-content: center;
+            gap: 2vh;
+        }
+        .profile_grpcontainer{
+            margin-top:3vh ;
+            width:20vw;
+            height:90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .profilecontainer{
+            width: 20vw;
+            height: 35vh;
+            background-color: aquamarine;
+        }
+        .groupcontainer{
+            width: 20vw;
+            height: 45vh;
+            background-color: aquamarine;
+        }
+        .postcontainer{
+            background-color: black;
+            width: 50vw;
+            height: 90vh;
+            margin-top: 3vh;
+            overflow-y: scroll;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .post{
+            width: 45vw;
+            margin-top: 2vh;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10%;
+        }
+        .postuser{
+            display: flex;
+            background-color: grey;
+            height: 6vh;
+            align-items: center;
+            gap: 1vh;
+        }
+        .userpic img{
+            max-width: 5vh;
+            max-height: 5vh;
+            margin-left: 1vh;
+        }
+        .postpic img{
+            max-width: 45vw;
+        }
+
+        .postcaption{
+            background-color: grey;
+        }
+        .followers_following{
+            margin-top:3vh ;
+            width:20vw;
+            height:90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+        .followers{
+            width: 20vw;
+            height: 35vh;
+            background-color: aquamarine;
+        }
+        .following{
+            width: 20vw;
+            height: 35vh;
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="title">INTerACT</div>
+    </nav>
+    
+    <main>
+
+        <div class="profile_grpcontainer">
+            <div class="profilecontainer">
+                Profile
+            </div>
+            <div class="groupcontainer">
+                Groups
+            </div>
+        </div>
+
+        <div class="postcontainer">
+            {% for post in posts %}
+            <div class="post">
+
+                <div class="postuser">
+
+                    <div class="userpic">
+                        <img src="/media/{{post.user.profile_pic}}" alt="">
+                    </div>
+                    <div class="username">
+                        {{post.user.username}}
+                    </div>
+                    
+                </div>
+
+                <div class="postpic">
+                    <img src="/media/{{post.post_img}}" alt="">
+                </div>
+
+                <div class="like">
+                    <form action="/user/post/{{post.post_slug}}/like">
+                        <input type="submit" name="" id="" value="Like">
+                        <div style="color: white;">
+                            Likes: {{post.no_of_likes}}
+                        </div>
+                    </form>
+                </div>
+
+                <div class="postcaption">
+                    {{post.post_caption}}
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="followers_following">
+            <div class="followers">
+                List of Followers
+            </div>
+            <div class="following">
+                List of Following
+            </div>
+        </div>
+
+    </main>
+
+
+
+    
+</body>
+</html>
+
+

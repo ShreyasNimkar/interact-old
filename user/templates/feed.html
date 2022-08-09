@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Feed</title>
+    <link rel="stylesheet" href="{%static 'feed.css'%}">
+    <style>
+        .profilepic img {
+            width: 6vh;
+            height: 6vh;
+            border-radius: 100%;
+        }
+
+        .photo {
+            width: 53vw;
+            background-color: rgb(177, 177, 177, 0);
+        }
+
+        .photo img {
+            max-width: 53vw;
+            border: 2px solid black;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .username a {
+            color: black;
+        }
+
+        .commentbox {
+            width: 53vw;
+            max-height: 40vh;
+            transition: all 0.5s ease-out;
+            background-color: rgb(177, 177, 177, 0.5);
+            margin-bottom: 1vh;
+            padding-bottom: 2vh;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        .addcomment {}
+
+        .commentuser {
+            width: 53vw;
+            height: 8vh;
+            background-color: rgb(31, 31, 31, 0);
+            display: flex;
+            align-items: center;
+            gap: 1vh;
+            padding-left: 1vh;
+        }
+
+        .commentprofilepic {
+            margin-left: 1vh;
+            width: 4vh;
+            height: 4vh;
+            background-color: rgb(192, 192, 192);
+            border-radius: 100%;
+        }
+
+        .commentprofilepic img {
+            width: 4vh;
+            height: 4vh;
+            border-radius: 100%;
+        }
+
+        .commentcontent {
+            padding: 0 2vh;
+        }
+
+        .createpost {
+            padding: 2vh 0;
+            width: 50vw;
+            display: none;
+        }
+
+        .createpost textarea {
+            margin-top: 0.8vh;
+            width: 49.7vw;
+            max-width: 49.7vw;
+            height: 10vh;
+            border: none;
+            font-family: 'Roboto Condensed', sans-serif;
+            background-color: rgb(206, 206, 206, 0.4);
+        }
+
+        .createpost input {
+            width: 50vw;
+            background-color: rgb(206, 206, 206, 0.8);
+            border: none;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .deletepost a {
+            color: black;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .postuser {
+            width: 40vw;
+        }
+
+        .postuserbox {
+            display: flex;
+            width: 53vw;
+            height: 8vh;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            max-width: 8vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo a {
+            max-width: 8vh;
+            height: 6vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo a img {
+            max-width: 7vw;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgb(59, 59, 59)
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="/user/feed/"><img src="{% static 'white with underline.png' %}" alt=""></a>
+            </div>
+            <div class="nav_items">
+                <a href="/user/view/{{request.user}}/">
+                    <div>Profile</div>
+                </a>
+                <a href="/grp/view/">
+                    <div>Explore</div>
+                </a>
+                <a href="#">
+                    <div> Groups</div>
+                </a>
+            </div>
+            <a href="/logout">
+                <div class="logout">logout</div>
+            </a>
+        </nav>
+    </header>
+
+
+    <div class="postcontainer">
+        {% load custom_tags %}
+
+        <div class="addpost">
+            <a href="#"><img src="{% static 'add.png'%}" alt="" onclick="createpost()"></a>
+            <div>Create New Post</div>
+        </div>
+        <div class="createpost">
+            <form action="/user/post/createhandler" method="post">
+                {% csrf_token %}
+                <input type="file" name="img" id=""> <br>
+                <textarea name="caption" id="" placeholder="Caption"></textarea> <br>
+                <input type="submit" name="" id="" value="Post">
+            </form>
+        </div>
+        {% for post in posts %}
+        <div class="post">
+            <div class="postuserbox">
+                <div class="postuser">
+                    <div class="profilepic">
+                        <img src="/media/{{post.user.profile_pic}}" alt="">
+                    </div>
+                    <div class="completename">
+                        <div class="name">
+                            <strong>{{post.user.name}}</strong>
+                        </div>
+                        <div class="username">
+                            <a href="/user/view/{{post.user.username}}/">@{{post.user.username}}</a>
+                        </div>
+                    </div>
+                </div>
+                {% if request.user|same:post.user %}
+                <div class="deletepost"><a href="/user/post/{{post.post_slug}}/delete">X</a></div>
+                {% endif %}
+            </div>
+            <div class="photo">
+                <img src="/media/{{post.post_img}}" alt="">
+            </div>
+            <div class="buttons">
+                <a href="/user/post/{{post.post_slug}}/like"><img src="{% static 'like.png'%}" alt=""></a>
+                <div class="likes">{{post.no_of_likes}}</div>
+                <img src="{% static 'comment.png'%}" alt="" class="commentbtn" value="this is value" id="{{post.post_slug}}">
+                <div class="likes">{{post.no_of_comments}}</div>
+            </div>
+            <div class="caption">
+                <div class="captioncontainer">
+                    {{post.post_caption}}
+                </div>
+            </div>
+            <div class="commentbox {{post.post_slug}}">
+                <div class="addcomment">
+
+                </div>
+                <div class="othercomments">
+
+                    {% for comment in comments|index:forloop.counter0 %}
+                    <div class="comment">
+                        <div class="commentuser">
+                            <div class="commentprofilepic">
+                                <img src="/media/{{comment.user.profile_pic}}" alt="">
+                            </div>
+                            <div class="completename">
+                                <div class="name" style="font-size: 15px;">
+                                    <strong>{{comment.user.name}}</strong>
+                                </div>
+                                <div class="username" style="font-size: 12px;">
+                                    <a href="/user/view/{{comment.user.username}}/">@{{comment.user.username}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="commentcontent" style="font-size: 15px;">
+                            {{comment.comment}}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+
+    <script>
+        console.log("Script is running")
+        function createpost() {
+            console.log("running")
+            elem = document.querySelector('.createpost').classList.toggle('show')
+        }
+        
+
+        commentbtns=document.querySelectorAll('.commentbtn')
+        for (var i=0;i<commentbtns.length;i++){
+            console.log(i)
+            commentbtns[i].addEventListener('click',showcommentbox)
+        }
+        function showcommentbox(){
+            console.log(self.id)
+            // commentbox=document.querySelector('.'+value);
+            // commentbox.style.height='40vh';
+        }
+    </script>
+</body>
+
+</html>

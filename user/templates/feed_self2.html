@@ -1,0 +1,380 @@
+{%extends 'basemain.html'%}
+{% load static %}
+{% block title %} User Feed {% endblock %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{%static 'feed.css'%}">
+<style>
+    body{
+        background-image: none;
+    }
+    nav{
+        background-color: rgb(36, 36, 36);
+        font-family: "Quicksand";
+        z-index: 10;
+    }
+    nav div{
+        color: rgb(226, 226, 226);
+    }
+    .postcontainer{
+        background-color: rgb(58, 58, 58,0.8);
+        border: 4px solid rgb(70, 70, 70);
+        border-width: 0px 4px 0px 4px;
+    }
+    .profilepic img {
+        width: 6vh;
+        height: 6vh;
+        border-radius: 100%;
+    }
+
+    .photo {
+        width: 53vw;
+        background-color: rgb(177, 177, 177, 0);
+        z-index: 10;
+    }
+
+    .photo img {
+        max-width: 53vw;
+        border: 2px solid black;
+        object-fit: cover;
+    }
+    img{
+        z-index: 10;
+        object-fit: cover;
+    }
+    a {
+        text-decoration: none;
+        color: rgb(172, 172, 172);
+    }
+    .completename{
+        font-family: 'Quicksand';
+        color: rgb(172, 172, 172);
+        z-index: 10;
+    }
+    .name{
+        font-weight: 700;
+    }
+    .commentbox {
+        width: 53vw;
+        max-height: 0vh;
+        padding: 0;
+        transition: all 0.5s ease-out;
+        background-color: rgb(177, 177, 177, 0.5);
+        margin-bottom: 1vh;
+        padding-bottom: 0vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+    .showcommentbox{
+        max-height: 40vh;
+        padding-bottom: 2vh;
+    }
+    .addcomment{
+        margin-top: 1vh;
+    }
+    .addcomment form{
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        gap: 1vw;
+    }
+    .addcomment textarea{
+        width: 40vw;
+        min-width: 40vw;
+        max-width: 45vw;
+        height: 3.8vh;
+        border-radius: 10px;
+        background-color: rgb(212, 212, 212,0.8);
+        font-family: 'Quicksand';
+        font-size: 15px;
+        padding: 0.5vh;
+        padding-bottom: 0;
+    }
+    .addcomment input{
+        margin-top: 0.2vh;
+        width: 5vw;
+        height: 4vh;
+        border-radius: 10px;
+        border-width: 0px;
+        background-color: rgb(212, 212, 212);
+        font-family: 'Quicksand';
+        font-weight: 700;
+        padding: 0.5vh
+    }
+    .comment{
+        margin-top: 2vh;
+    }
+    .commentuser {
+        width: 53vw;
+        height: 8vh;
+        background-color: rgb(31, 31, 31, 0);
+        display: flex;
+        align-items: center;
+        gap: 1vh;
+        padding-left: 1vh;
+        color: black;
+    }
+
+    .commentprofilepic {
+        margin-left: 1vh;
+        width: 4vh;
+        height: 4vh;
+        background-color: rgb(192, 192, 192);
+        border-radius: 100%;
+    }
+
+    .commentprofilepic img {
+        width: 4vh;
+        height: 4vh;
+        border-radius: 100%;
+        object-fit: cover;
+    }
+
+    .commentcontent {
+        padding: 0 2vh;
+    }
+    .addpost{
+        font-family: "Quicksand";
+        font-weight: 700;
+    }
+    .createpost {
+        padding: 2vh 0;
+        width: 50vw;
+        display: none;
+        font-family: 'Quicksand';
+        z-index: 20;
+    }
+
+    .createpost textarea {
+        margin-top: 0.8vh;
+        min-width: 49.7vw;
+        max-width: 49.7vw;
+        height: 10vh;
+        font-size: 15px;
+        border: none;
+        font-family: 'Quicksand';
+        background-color: rgb(206, 206, 206, 0.4);
+    }
+
+    .createpost input {
+        width: 50vw;
+        background-color: rgb(206, 206, 206, 0.8);
+        border: none;
+        font-family: 'Quicksand';
+    }
+
+
+    .deletepost a {
+        color: black;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .postuser {
+        width: 40vw;
+    }
+
+    .postuserbox {
+        display: flex;
+        width: 53vw;
+        height: 8vh;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        max-height: 5vh;
+        max-width: 8vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .logo a {
+        max-width: 8vh;
+        height: 6vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo a img {
+        max-width: 7vw;
+    }
+    .caption{
+        z-index: 10;
+    }
+    .captioncontainer{
+        color: rgb(202, 202, 202);
+    }
+    .commentcompletename{
+        color: black;
+    }
+    .commentcompletename a{
+        color: black;
+    }
+    .confirmdelete{
+        font-weight: 700;
+        font-size: 18px;
+        display: none;
+        width: 15vw;
+        text-align: right;
+    }
+    .confirmdelete a{
+        font-weight: 400;
+        font-size: 15px;
+        margin-right: 0.5vw;
+    }
+    .show {
+        display: block;
+    }
+    .hide{
+        display: none;
+    }
+    ::-webkit-scrollbar-track {
+        background: rgb(59, 59, 59)
+    }
+    a:hover{
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="/user/feed/"><img src="{% static 'white with underline.png' %}" alt=""></a>
+        </div>
+        <div class="nav_items">
+            <a href="/user/view/{{request.user}}/">
+                <div>Profile</div>
+            </a>
+            <a href="/grp/view/">
+                <div>Explore</div>
+            </a>
+            <a href="/grp/joinchat">
+                <div> Groups</div>
+            </a>
+        </div>
+        <a href="/logout">
+            <div class="logout">logout</div>
+        </a>
+    </nav>
+</header>
+
+
+<div class="postcontainer">
+    {% load custom_tags %}
+
+    <div class="addpost">
+        <a href="#"><img src="{% static 'add.png'%}" alt="" onclick="createpost()"></a>
+        <div>Create New Post</div>
+    </div>
+    <div class="createpost">
+        <form action="/user/post/createhandler" method="post">
+            {% csrf_token %}
+            <input type="file" name="img" id=""> <br>
+            <textarea name="caption" id="" placeholder="Caption"></textarea> <br>
+            <input type="submit" name="" id="" value="Post">
+        </form>
+    </div>
+    {% for post in posts %}
+    <div class="post">
+        <div class="postuserbox">
+            <div class="postuser">
+                <div class="profilepic">
+                    <img src="/media/{{post.user.profile_pic}}" alt="">
+                </div>
+                <div class="completename">
+                    <div class="name">
+                        <strong>{{post.user.name}}</strong>
+                    </div>
+                    <div class="username">
+                        <a href="/user/view/{{post.user.username}}/">@{{post.user.username}}</a>
+                    </div>
+                </div>
+            </div>
+            {% if request.user|same:post.user %}
+            <div class="confirmdelete" id="{{post.post_slug}}delete">Confirm delete? <a href="/user/post/{{post.post_slug}}/delete">Yes</a><a onclick="deletepost('{{post.post_slug}}')">No</a></div>
+            <div class="deletepost" id="{{post.post_slug}}deletebtn"><a onclick="deletepost('{{post.post_slug}}')">X</a></div>
+            {% endif %}
+        </div>
+        <div class="photo">
+            <img src="/media/{{post.post_img}}" alt="">
+        </div>
+        <div class="buttons">
+            {% if request.user in likers|index:forloop.counter0 %}
+            <a href="/user/post/{{post.post_slug}}/like"><img src="{% static 'like filled.png'%}" alt=""></a>
+            {% else %}
+            <a href="/user/post/{{post.post_slug}}/like"><img src="{% static 'like.png'%}" alt=""></a>
+            {% endif %}
+            <div class="likes">{{post.no_of_likes}}</div>
+            <img src="{% static 'comment.png'%}" alt="" class="commentbtn" value="this is value" id="{{post.post_slug}}" onclick="showcommentbox(document.getElementById('{{post.post_slug}}'))">
+            <div class="likes">{{post.no_of_comments}}</div>
+        </div>
+        <div class="caption">
+            <div class="captioncontainer">
+                {{post.post_caption}}
+            </div>
+        </div>
+        <div class="commentbox" id="{{post.post_slug}}commentbox">
+            <div class="addcomment">
+                <form action="/user/post/{{post.post_slug}}/comment/create" method="post">
+                    {% csrf_token %}
+                <textarea name="comment"></textarea>
+                <input type="submit" value="Comment">
+                </form>
+            </div>
+            <div class="othercomments">
+
+                {% for comment in comments|index:forloop.counter0 %}
+                <div class="comment">
+                    <div class="commentuser">
+                        <div class="commentprofilepic">
+                            <img src="/media/{{comment.user.profile_pic}}" alt="">
+                        </div>
+                        <div class="completename commentcompletename">
+                            <div class="name" style="font-size: 15px;">
+                                <strong>{{comment.user.name}}</strong>
+                            </div>
+                            <div class="username" style="font-size: 12px;">
+                                <a href="/user/view/{{comment.user.username}}/">@{{comment.user.username}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="commentcontent" style="font-size: 15px;">
+                        {{comment.comment}}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+<script>
+    function createpost() {
+        elem = document.querySelector('.createpost').classList.toggle('show')
+    }
+
+    function showcommentbox(btn){
+        id=btn.getAttribute("id");
+        commentbox=document.getElementById(id+"commentbox");
+        commentbox.classList.toggle('showcommentbox')
+    }
+
+    function deletepost(id){
+        confirmdelete=document.getElementById(id+"delete")
+        deletebtn=document.getElementById(id+"deletebtn")
+        confirmdelete.classList.toggle('show')
+        deletebtn.classList.toggle('hide')
+    }
+</script>
+
+{% endblock %}

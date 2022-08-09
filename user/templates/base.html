@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>{%block title%}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles/homepagestyles.css'%}">
+    {% block link %}{% endblock %}
+</head>
+<body>
+        {% block body %}{% endblock %}
+        <script>
+            for(i=0;i<20;i++){
+                document.querySelector("body").innerHTML+=`
+                <div class="stars1"
+                style="--x:${window.innerWidth*Math.random()};--y:${window.innerHeight*Math.random()}">
+                </div>
+                `
+            }
+            for(i=0;i<20;i++){
+                document.querySelector("body").innerHTML+=`
+                <div class="stars2"
+                style="--x:${window.innerWidth*Math.random()};--y:${window.innerHeight*Math.random()}">
+                </div>
+                `
+            }
+            for(i=0;i<20;i++){
+                document.querySelector("body").innerHTML+=`
+                <div class="stars3"
+                style="--x:${window.innerWidth*Math.random()};--y:${window.innerHeight*Math.random()}">
+                </div>
+                `
+            }
+            for(i=0;i<20;i++){
+                document.querySelector("body").innerHTML+=`
+                <div class="stars4"
+                style="--x:${window.innerWidth*Math.random()};--y:${window.innerHeight*Math.random()}">
+                </div>
+                `
+            }
+            for(i=0;i<20;i++){
+                document.querySelector("body").innerHTML+=`
+                <div class="stars5"
+                style="--x:${window.innerWidth*Math.random()};--y:${window.innerHeight*Math.random()}">
+                </div>
+                `
+            }
+            for(i=0;i<20;i++){
+                document.querySelector("body").innerHTML+=`
+                <div class="stars6"
+                style="--x:${window.innerWidth*Math.random()};--y:${window.innerHeight*Math.random()}">
+                </div>
+                `
+            }
+        </script>
+
+</body>
+</html>

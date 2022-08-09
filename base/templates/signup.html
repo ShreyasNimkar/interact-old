@@ -1,0 +1,170 @@
+{% extends 'basemain.html' %}
+
+{% block title %}Log In{%endblock%}
+
+{% block css %}
+<style>
+    .mainbox{
+        font-family:'Quicksand';
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5vw;
+    }
+    .signup{
+        width:40vw;
+        height: 85vh;
+        background-color: rgb(170, 170, 170);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2vh;
+        border: 5px solid rgb(218, 218, 218);
+        transition: all 0.5s ease-out;
+    }
+    .text{
+        width:35vw;
+        height: 40vh;
+        background-color: rgb(116, 116, 116);
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        border: 5px solid rgb(221, 221, 221);
+        transition: all 0.5s ease-out;
+    }
+    img{
+        margin-top: 2vh;
+        max-width: 28vw;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 1vh;
+        justify-content: center;
+        align-items: center;
+        height: 60vh;
+    }
+    form div{
+
+    }
+    form div input{
+        font-family:'Quicksand';
+        width: 30vw;
+        height: 5vh;
+        border: 2px solid black;
+        border-radius: 30px;
+        font-size: 20px;
+        padding-left: 1vh;
+    }
+    form div label{
+        font-weight: 700;
+        font-size: 20px;
+    }
+    #submit{
+        font-family:'Quicksand';
+        border-radius: 30px;
+        font-size: 20px;
+        width: 12vw;
+        height: 6vh;
+        margin-top: 1vh;
+        background-color: white;
+        border: 2px solid black;
+        font-weight: 700;
+    }
+    form div input:focus{
+        background-color: black;
+        color: white;
+    }
+    .head{
+        font-size: 140px;
+        margin-top: 4vh;
+    }
+    .below{
+        font-size: 20px;
+    }
+    .below a{
+
+    }
+    .below a:hover{
+        text-decoration: underline;
+    }
+    .signup:hover{
+        box-shadow: 10px 10px white;
+    }
+    .text:hover{
+        box-shadow: -10px 10px white;
+    }
+    .name input{
+        width: 14.2vw;
+    }
+    .email_age{
+        display: flex;
+        gap: 0.2vw;
+    }
+    .email input{
+        width: 24.8vw;
+    }
+    .age input{
+        width: 4vw;
+    }
+</style>
+
+{%endblock%}
+
+
+{% block main %}
+{% load static %}
+<div class="mainbox">
+
+    <div class="text">
+        <div class="head">
+            Sign In!
+        </div>
+        <div class="below">
+            Already have an Account? <a href="/login/">Log In</a> from here!
+        </div>
+    </div>
+
+    <div class="signup">
+        <img src="{% static 'black with underline.png' %}" alt="Image not found">
+        <form action="/signuphandler/" method="post">
+            {% csrf_token %}
+            <div class="username">
+                <label for="">Username : </label><br>
+            <input type="text" name="username"username id="">
+            </div>
+            <div class="name">
+                <label for="">Name:</label><br>
+                <input type="text" name="fname"username id="" placeholder="First Name">
+                <input type="text" name="lname"username id="" placeholder="Last Name">
+            </div>
+            <div class="email_age">
+                <div class="email">
+                    <label for=""> Email : </label><br>
+                    <input type="email" name="email"username id="">
+                </div>
+                <div class="age">
+                    <label for="" style="margin-left: 5px;">Age : </label><br>
+                    <input type="number" name="age"username id="">
+                </div>
+            </div>
+                <div class="pass1">
+                    <label for="">Password : </label><br>
+                    <input type="password" name="password"username id="">
+                </div>
+                <div class="pass2">
+                    <label for="">Confirm Password : </label><br>
+                    <input type="password" name="cpassword"username id="">
+                </div>
+                
+            <input type="submit" name="" id="submit" value="start interacting!">
+        </form>
+        
+    </div>  
+
+</div>
+
+{%endblock%}

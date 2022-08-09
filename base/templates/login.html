@@ -1,0 +1,132 @@
+{% extends 'basemain.html' %}
+
+{% block title %}Log In{%endblock%}
+
+{% block css %}
+<style>
+    .mainbox{
+        font-family:'Quicksand';
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5vw;
+    }
+    .login{
+        width:30vw;
+        height: 80vh;
+        background-color: rgb(170, 170, 170);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 5px solid rgb(218, 218, 218);
+        transition: all 0.5s ease-out;
+    }
+    .text{
+        width:35vw;
+        height: 40vh;
+        background-color: rgb(116, 116, 116);
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        border: 5px solid rgb(221, 221, 221);
+        transition: all 0.5s ease-out;
+    }
+    img{
+        margin-top: 5vh;
+        max-width: 28vw;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 2vh;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+    }
+    form div{
+
+    }
+    form div input{
+        font-family:'Quicksand';
+        width: 20vw;
+        height: 5vh;
+        border: 2px solid black;
+        border-radius: 30px;
+        font-size: 20px;
+        padding-left: 1vh;
+    }
+    form div label{
+        font-weight: 700;
+        font-size: 20px;
+    }
+    #submit{
+        font-family:'Quicksand';
+        border-radius: 30px;
+        font-size: 20px;
+        width: 10vw;
+        background-color: white;
+        border: 2px solid black;
+        font-weight: 700;
+    }
+    form div input:focus{
+        background-color: black;
+        color: white;
+    }
+    .head{
+        font-size: 140px;
+        margin-top: 4vh;
+    }
+    .below{
+        font-size: 20px;
+    }
+    .below a{
+
+    }
+    .below a:hover{
+        text-decoration: underline;
+    }
+    .login:hover{
+        box-shadow: -10px 10px white;
+    }
+    .text:hover{
+        box-shadow: 10px 10px white;
+    }
+</style>
+{%endblock%}
+
+
+{% block main %}
+{% load static %}
+<div class="mainbox">
+
+    <div class="login">
+        <img src="{% static 'black with underline.png' %}" alt="Image not found">
+        <form action="/loginhandler/" method="post">
+            {% csrf_token %}
+            <div class="username">
+                <label for="">Username :</label> <br>
+                <input type="text" name="username" id="">
+            </div>
+            <div class="password">
+                <label for="">Password : </label> <br>
+                <input type="password" name="password" id="">
+            </div>
+            
+            <input type="submit" name="" id="submit" value="interact!">
+        </form>
+    </div>  
+    <div class="text">
+        <div class="head">
+            Log in!
+        </div>
+        <div class="below">
+            Don't have an account yet? <a href="/signup/">Create One</a> Now!
+        </div>
+    </div>
+
+</div>
+
+{%endblock%}

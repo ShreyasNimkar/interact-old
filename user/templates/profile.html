@@ -1,0 +1,602 @@
+{% extends 'basemain.html' %}
+{% load static %}
+
+{% block title %}{{user.name}}{%endblock%}
+
+{% block css %}
+<link rel="stylesheet" href="{%static 'feed.css'%}">
+<style>
+    body {
+        background-image: none;
+    }
+
+    nav {
+        background-color: rgb(36, 36, 36);
+        font-family: "Quicksand";
+        z-index: 10;
+    }
+
+    nav div {
+        color: rgb(226, 226, 226);
+    }
+
+    .postcontainer {
+        background-color: rgb(58, 58, 58, 0.8);
+        border: 4px solid rgb(70, 70, 70);
+        border-width: 0px 4px 0px 4px;
+    }
+
+    .profilepic img {
+        width: 6vh;
+        height: 6vh;
+        border-radius: 100%;
+    }
+
+    .post {
+        width: 56vw;
+    }
+
+    .photo {
+        width: 56vw;
+        background-color: rgb(177, 177, 177, 0);
+        z-index: 10;
+    }
+
+    .photo img {
+        max-width: 56vw;
+        border: 2px solid black;
+    }
+
+    img {
+        z-index: 10;
+    }
+
+    a {
+        text-decoration: none;
+        color: rgb(172, 172, 172);
+    }
+
+    .name {
+        font-weight: 700;
+    }
+
+    .commentbox {
+        width: 56vw;
+        max-height: 0vh;
+        padding: 0;
+        transition: all 0.5s ease-out;
+        background-color: rgb(177, 177, 177, 0.5);
+        margin-bottom: 1vh;
+        padding-bottom: 0vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .showcommentbox {
+        max-height: 40vh;
+        padding-bottom: 2vh;
+    }
+
+    .addcomment {
+        margin-top: 1vh;
+    }
+
+    .addcomment form {
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        gap: 1vw;
+    }
+
+    .addcomment textarea {
+        width: 45vw;
+        min-width: 45vw;
+        max-width: 48vw;
+        height: 3.8vh;
+        border-radius: 10px;
+        background-color: rgb(212, 212, 212, 0.8);
+        font-family: 'Quicksand';
+        font-size: 15px;
+        padding: 0.5vh;
+        padding-bottom: 0;
+    }
+
+    .addcomment input {
+        margin-top: 0.2vh;
+        width: 5vw;
+        height: 4vh;
+        border-radius: 10px;
+        border-width: 0px;
+        background-color: rgb(212, 212, 212);
+        font-family: 'Quicksand';
+        font-weight: 700;
+        padding: 0.5vh
+    }
+
+    .comment {
+        margin-top: 2vh;
+    }
+
+    .commentuser {
+        width: 56vw;
+        height: 8vh;
+        background-color: rgb(31, 31, 31, 0);
+        display: flex;
+        align-items: center;
+        gap: 1vh;
+        padding-left: 1vh;
+        color: black;
+    }
+
+    .commentprofilepic {
+        margin-left: 1vh;
+        width: 4vh;
+        height: 4vh;
+        background-color: rgb(192, 192, 192);
+        border-radius: 100%;
+    }
+
+    .commentprofilepic img {
+        width: 4vh;
+        height: 4vh;
+        border-radius: 100%;
+    }
+
+    .commentcontent {
+        padding: 0 2vh;
+    }
+
+    .addpost {
+        font-family: "Quicksand";
+        font-weight: 700;
+    }
+
+    .createpost {
+        padding: 2vh 0;
+        width: 50vw;
+        display: none;
+        font-family: 'Quicksand';
+        z-index: 20;
+    }
+
+    .createpost textarea {
+        margin-top: 0.8vh;
+        min-width: 49.7vw;
+        max-width: 49.7vw;
+        height: 10vh;
+        font-size: 15px;
+        border: none;
+        font-family: 'Quicksand';
+        background-color: rgb(206, 206, 206, 0.4);
+    }
+
+    .createpost input {
+        width: 50vw;
+        background-color: rgb(206, 206, 206, 0.8);
+        border: none;
+        font-family: 'Quicksand';
+    }
+
+
+    .deletepost a {
+        color: black;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .postuser {
+        width: 40vw;
+    }
+
+    .postuserbox {
+        display: flex;
+        width: 56vw;
+        height: 8vh;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        max-height: 5vh;
+        max-width: 8vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .logo a {
+        max-width: 8vh;
+        height: 6vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo a img {
+        max-width: 7vw;
+    }
+
+    .caption {
+        width: 56vw;
+        z-index: 10;
+    }
+
+    .captioncontainer {
+        color: rgb(202, 202, 202);
+    }
+
+    .commentcompletename {
+        color: black;
+    }
+
+    .commentcompletename a {
+        color: black;
+    }
+
+    .confirmdelete {
+        font-weight: 700;
+        font-size: 18px;
+        display: none;
+        width: 15vw;
+        text-align: right;
+    }
+
+    .confirmdelete a {
+        font-weight: 400;
+        font-size: 15px;
+        margin-right: 0.5vw;
+    }
+
+    .show {
+        display: block;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgb(59, 59, 59)
+    }
+
+    a:hover {
+        cursor: pointer;
+    }
+
+    * {
+        margin: 0;
+    }
+
+    body {
+        background-image: none;
+    }
+
+    nav {
+        background-color: rgb(36, 36, 36);
+        font-family: "Quicksand";
+        z-index: 10;
+    }
+
+    nav div {
+        color: rgb(226, 226, 226);
+    }
+
+    nav {
+        width: 100vw;
+        height: 6vh;
+    }
+
+    .container {
+        margin: auto;
+        width: 60vw;
+        height: 94vh;
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(58, 58, 58, 0.8);
+        border: 4px solid rgb(70, 70, 70);
+        border-width: 0px 4px 0px 4px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    .profile {
+        width: 60vw;
+        height: 40vh;
+    }
+
+    .postbox {
+        width: 60vw;
+        height: 54vh;
+        border-top: 4px solid rgb(27, 27, 27);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo {
+        max-height: 5vh;
+        max-width: 8vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .logo a {
+        max-width: 8vh;
+        height: 6vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo a img {
+        max-width: 7vw;
+    }
+
+    .profile {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .img {
+        width: 32vh;
+        height: 32vh;
+        border-radius: 100%;
+    }
+
+    .img img {
+        width: 32vh;
+        height: 32vh;
+        border-radius: 100%;
+        border: 2px solid white;
+    }
+
+    .text {
+        width: 40vw;
+        display: flex;
+        flex-direction: column;
+        gap: 2vh;
+    }
+
+    .completename {
+        font-family: 'Quicksand';
+        color: rgb(255, 255, 255);
+        z-index: 10;
+    }
+
+    .namemain {
+        font-weight: 700;
+        font-size: 25px;
+    }
+
+    .usernamemain {
+        font-size: 20px;
+    }
+
+    .bio {
+        color: white;
+        font-family: 'Quicksand';
+        height: 15vh;
+    }
+
+    .values {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .value {
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: 'Quicksand';
+        font-size: 20px;
+    }
+
+    .completenamemain {
+        font-family: 'Quicksand';
+        color: rgb(172, 172, 172);
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+    }
+    .followbtn form input{
+        font-family: 'Quicksand';
+        border-radius: 15px;
+        margin-top: 2vh;
+        width: 10vh;
+        height: 4vh;
+        font-size: 15px;
+        background-color: rgb(218, 218, 218);
+        border: 2px solid black;
+    }
+    .edit input{
+        width: 5vh;
+        height: 5vh;
+    }
+    img{
+        object-fit: cover;
+        z-index: 100;
+    }
+</style>
+{%endblock%}
+
+{% block main %}
+{% load custom_tags %}
+<nav>
+    <div class="logo">
+        <a href="/user/feed/"><img src="{% static 'white with underline.png' %}" alt=""></a>
+    </div>
+    <div class="nav_items">
+        <a href="/user/feed/">
+            <div>Feed</div>
+        </a>
+        <a href="/grp/view/">
+            <div>Explore</div>
+        </a>
+        <a href="/grp/joinchat">
+            <div> Groups</div>
+        </a>
+    </div>
+    <a href="/logout">
+        <div class="logout">logout</div>
+    </a>
+</nav>
+
+<div class="container">
+    <div class="profile">
+        <div class="img">
+            <img src="/media/{{user.profile_pic}}" alt="">
+        </div>
+        <div class="text">
+            <div class="completenamemain">
+                <div>
+                    <div class="namemain">
+                        <strong>{{user.name}}</strong>
+                    </div>
+                    <div class="usernamemain">
+                        <a href="/user/view/{{post.user.username}}/">@{{user.username}}</a>
+                    </div>
+                </div>
+                {% if request.user|same:user %}
+                <div class="edit">
+                    <form action=""><input type="image" src="{% static 'edit.png' %}"></form>
+                </div>
+                {% else %}
+                {% if user in requesting_user_following %}
+                <div class="followbtn">
+                    <form action="/user/unfollow/{{user.username}}/"><input type="submit" name="" value="Following" style="width: 11vh; color:black"></form>
+                </div>
+                {%else%}
+                <div class="followbtn">
+                    <form action="/user/follow/{{user.username}}/"><input type="submit" name="" value="Follow"></form>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+            <div class="bio">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas ullam assumenda reprehenderit soluta,
+                molestiae facere reiciendis nobis debitis non voluptates commodi praesentium, animi velit aperiam sunt
+                explicabo quis nemo quasi alias voluptatum facilis eos? Voluptatum, provident.
+            </div>
+            <div class="values">
+                <div class="value">
+                    <div class="ups">{{followers|length}}</div>
+                    <div class="downs">Followers</div>
+                </div>
+                <div class="value">
+                    <div class="ups">{{following|length}}</div>
+                    <div class="downs">Following</div>
+                </div>
+                <div class="value">
+                    <div class="ups">{{groups|length}}</div>
+                    <div class="downs">Groups</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="postbox">
+        {% for post in posts %}
+        <div class="post">
+            <div class="postuserbox">
+                <div class="postuser">
+                    <div class="profilepic">
+                        <img src="/media/{{post.user.profile_pic}}" alt="">
+                    </div>
+                    <div class="completename">
+                        <div class="name">
+                            <strong>{{post.user.name}}</strong>
+                        </div>
+                        <div class="username">
+                            <a href="/user/view/{{post.user.username}}/">@{{post.user.username}}</a>
+                        </div>
+                    </div>
+                </div>
+                {% if request.user|same:post.user %}
+                <div class="confirmdelete" id="{{post.post_slug}}delete">Confirm delete? <a
+                        href="/user/post/{{post.post_slug}}/delete">Yes</a><a
+                        onclick="deletepost('{{post.post_slug}}')">No</a></div>
+                <div class="deletepost" id="{{post.post_slug}}deletebtn"><a
+                        onclick="deletepost('{{post.post_slug}}')">X</a></div>
+                {% endif %}
+            </div>
+            <div class="photo">
+                <img src="/media/{{post.post_img}}" alt="">
+            </div>
+            <div class="buttons">
+                {% if request.user in likers|index:forloop.counter0 %}
+                <a href="/user/post/{{post.post_slug}}/like"><img src="{% static 'like filled.png'%}" alt=""></a>
+                {% else %}
+                <a href="/user/post/{{post.post_slug}}/like"><img src="{% static 'like.png'%}" alt=""></a>
+                {% endif %}
+                <div class="likes">{{post.no_of_likes}}</div>
+                <img src="{% static 'comment.png'%}" alt="" class="commentbtn" value="this is value"
+                    id="{{post.post_slug}}" onclick="showcommentbox(document.getElementById('{{post.post_slug}}'))">
+                <div class="likes">{{post.no_of_comments}}</div>
+            </div>
+            <div class="caption">
+                <div class="captioncontainer">
+                    {{post.post_caption}}
+                </div>
+            </div>
+            <div class="commentbox" id="{{post.post_slug}}commentbox">
+                <div class="addcomment">
+                    <form action="/user/post/{{post.post_slug}}/comment/create" method="post">
+                        {% csrf_token %}
+                        <textarea name="comment"></textarea>
+                        <input type="submit" value="Comment">
+                    </form>
+                </div>
+                <div class="othercomments">
+
+                    {% for comment in comments|index:forloop.counter0 %}
+                    <div class="comment">
+                        <div class="commentuser">
+                            <div class="commentprofilepic">
+                                <img src="/media/{{comment.user.profile_pic}}" alt="">
+                            </div>
+                            <div class="completename commentcompletename">
+                                <div class="name" style="font-size: 15px;">
+                                    <strong>{{comment.user.name}}</strong>
+                                </div>
+                                <div class="username" style="font-size: 12px;">
+                                    <a href="/user/view/{{comment.user.username}}/">@{{comment.user.username}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="commentcontent" style="font-size: 15px;">
+                            {{comment.comment}}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function createpost() {
+        elem = document.querySelector('.createpost').classList.toggle('show')
+    }
+
+    function showcommentbox(btn) {
+        id = btn.getAttribute("id");
+        commentbox = document.getElementById(id + "commentbox");
+        commentbox.classList.toggle('showcommentbox')
+    }
+
+    function deletepost(id) {
+        confirmdelete = document.getElementById(id + "delete")
+        deletebtn = document.getElementById(id + "deletebtn")
+        confirmdelete.classList.toggle('show')
+        deletebtn.classList.toggle('hide')
+    }
+</script>
+
+{%endblock%}

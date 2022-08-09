@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Group{%endblock%}
+
+{% block body %}
+
+Post of {{user}}
+
+<ol>
+    {% for post in posts %}
+    <li>
+        <h2>{{post.post_caption}}</h2>
+    </li>
+    {% endfor %}
+</ol>
+
+{%endblock%}

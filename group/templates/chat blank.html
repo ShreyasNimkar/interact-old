@@ -1,0 +1,176 @@
+{% extends 'basemain.html' %}
+{% load static %}
+{% block title %}Welcome{%endblock%}
+
+{% block css %}
+<link rel="stylesheet" href="{%static 'feed.css'%}">
+<style>
+    .logo {
+        max-height: 5vh;
+        max-width: 8vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .logo a {
+        max-width: 8vh;
+        height: 6vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo a img {
+        max-width: 7vw;
+    }
+
+    * {
+        margin: 0;
+    }
+
+    body {
+        background-image: none;
+    }
+
+    nav {
+        background-color: rgb(36, 36, 36);
+        font-family: "Quicksand";
+        z-index: 10;
+    }
+
+    nav div {
+        color: rgb(226, 226, 226);
+    }
+
+    nav {
+        width: 100vw;
+        height: 6vh;
+    }
+
+    .grouparea {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .grouplist {
+        width: 26vw;
+        height: 94vh;
+        background-color: rgb(49, 49, 49);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: scroll;
+    }
+
+    .group {
+        width: 24vw;
+        height: 12vh;
+        margin-top: 1vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border: 1px solid white;
+    }
+    .icon{
+        height: 11vh;
+        width: 11vh;
+        border-radius: 100%;
+        background-color: coral;
+    }
+    .icon img{
+        height: 11vh;
+        width: 11vh;
+        border-radius: 100%;
+        object-fit: cover;
+    }
+    .grpinfo{
+        height: 11vh;
+        width: 16vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.5vh;
+        font-family: 'Quicksand';
+        color: white;
+    }
+    .grpname{
+        font-size: 30px;
+        font-weight: 700;
+    }
+    .grpmembers{
+        font-size: 18px;
+    }
+    .grouppreface{
+        width: 72vw;
+        height: 92vh;
+        border: 2px solid white;
+        background-color: rgb(29, 29, 29);
+        border-radius: 5px;
+        font-size: 100px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Quicksand';
+        font-weight: 700;
+    }
+    .grouppreface div{
+        margin-bottom: 10vh;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+
+{% load custom_tags %}
+
+<nav>
+    <div class="logo">
+        <a href="/user/feed/"><img src="{% static 'white with underline.png' %}" alt=""></a>
+    </div>
+    <div class="nav_items">
+        <a href="/user/feed/">
+            <div>Feed</div>
+        </a>
+        <a href="/grp/view/">
+            <div>Explore</div>
+        </a>
+        <a href="#">
+            <div> Groups</div>
+        </a>
+    </div>
+    <a href="/logout">
+        <div class="logout">logout</div>
+    </a>
+</nav>
+
+<div class="grouparea">
+    <div class="grouplist">
+        {% for user_group in user_groups %}
+        <a href="/grp/joinchat/{{user_group.slug}}">
+        <div class="group">
+            <div class="icon">
+                <img src="/media/{{user_group.icon}}" alt="">
+            </div>
+            <div class="grpinfo">
+                <div class="grpname">
+                    {{user_group.name}}
+                </div>
+                <div class="grpmembers">
+                    {{user_group.no_of_members}} Members
+                </div>
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="grouppreface">
+        <div>
+            Start Interacting!
+        </div>
+    </div>
+
+{%endblock%}

@@ -1,0 +1,191 @@
+{% extends 'basemain.html' %}
+
+{% load static %}
+
+{% block title %}Create Group{%endblock%}
+
+{% block css %}
+<link rel="stylesheet" href="{%static 'feed.css'%}">
+    <style>
+
+.logo {
+        max-height: 5vh;
+        max-width: 8vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .logo a {
+        max-width: 8vh;
+        height: 6vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo a img {
+        max-width: 7vw;
+    }
+
+    * {
+        margin: 0;
+    }
+
+    body {
+        background-image: none;
+    }
+
+    nav {
+        background-color: rgb(36, 36, 36);
+        font-family: "Quicksand";
+        z-index: 10;
+    }
+
+    nav div {
+        color: rgb(226, 226, 226);
+    }
+
+    nav {
+        width: 100vw;
+        height: 6vh;
+    }
+
+
+
+
+        .container{
+            width: 60vw;
+            height: 94vh;
+            margin: auto;
+            border: 4px solid rgb(70, 70, 70);
+            border-width: 0px 4px 0px 4px;
+            display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgb(58, 58, 58, 0.8);
+        }
+
+        .head{
+            width: 60vw;
+            height: 25vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .head div{
+            font-family: "Quicksand";
+            font-size: 100px;
+            color: white;
+            text-decoration: underline;
+            font-weight: 700;
+            text-decoration-thickness:5px;
+            text-underline-offset: 6px;
+        }
+        .form{
+            width: 60vw;
+            height: 56vh;
+            margin-top: 5vh;
+        }
+        .form form{
+            display: flex;
+            flex-direction: column;
+            width: 55vw;
+            height: 50vh;
+            margin-right: 5vw;
+            align-items: center;
+            gap: 1vh;
+        }
+        form div{
+            display: grid;
+            grid-template-columns: 10vw 30vw;
+            width: 40vw;
+            gap: 1vh;
+            align-items: center;
+        }
+        label{
+            color: white;
+            font-size: 25px;
+            font-family: "Quicksand";
+
+        }
+        textarea{
+            font-size: 20px;
+            font-family: "Quicksand";
+            width: 32vw;
+            min-width: 20vw;
+            min-height: 5vh;
+            max-height: 40vh;
+            max-width: 40vw;
+            height: 20vh;
+        }
+        input{
+            font-size: 20px;
+            font-family: "Quicksand";
+            width: 20vw;
+            height: 5vh;
+            background-color: rgb(226, 226, 226);
+            border: none;
+        }
+        #submit{
+            margin-top: 2vh;
+            margin-left: 2vh;
+        }
+        form div input:focus{
+        background-color: rgb(27, 27, 27);
+        color: white;
+        }
+        textarea:focus{
+        background-color: rgb(37, 37, 37);
+        color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    
+<nav>
+    <div class="logo">
+        <a href="/user/feed/"><img src="{% static 'white with underline.png' %}" alt=""></a>
+    </div>
+    <div class="nav_items">
+        <a href="/user/feed/">
+            <div>Feed</div>
+        </a>
+        <a href="/grp/view/">
+            <div>Explore</div>
+        </a>
+        <a href="/grp/joinchat">
+            <div> Groups</div>
+        </a>
+    </div>
+    <a href="/logout">
+        <div class="logout">logout</div>
+    </a>
+</nav>
+
+    <div class="container">
+        <div class="head">
+            <div>Create Group</div>
+        </div>
+        <div class="form">
+            <form action="/grp/createhandler/" method="post">
+            {% csrf_token %}
+                <div class="pic">
+                    <label for="">Group Icon:</label>
+                    <input type="file" name="icon" id="">
+                </div>
+                <div class="name">
+                    <label for="">Group Name:</label>
+                    <input type="text" name="name">
+                </div>
+                <div class="description">
+                    <label for="">Description:</label>
+                    <textarea name="text" id="" cols="30" rows="10"></textarea>
+                </div>
+                <input type="submit" name="" id="submit" value="Create Group">
+            </form>
+        </div>
+    </div>
+{%endblock%}
